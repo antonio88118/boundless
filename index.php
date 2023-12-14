@@ -201,7 +201,7 @@
                     <div class="d-flex justify-content-center flex-wrap">
                         <h1 class="">歡迎來到Boundless後台管理系統</h1>
                         <div class="w-100"></div>
-                        <img src="/test_images/DPxR_ieVQAAxe0G (1).png" alt="首頁封面" style="width: 800px;">
+                        <img src="./home_page.jpg" alt="首頁封面" style="width: 700px;">
                     </div>
                 </div>
                 <!-- /.container-fluid -->
