@@ -87,7 +87,7 @@ $result = $conn->query($sql);
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-            
+
             <!-- Nav Item -->
             <li class="nav-item active">
                 <a class="nav-link" href="user-list.php">
@@ -136,7 +136,7 @@ $result = $conn->query($sql);
                         <h6 class="collapse-header">樂器</h6>
                         <a class="collapse-item" href="brand_list.php">品牌</a>
                         <a class="collapse-item" href="instrument_category_list.php">樂器類別</a>
-                        
+
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">課程</h6>
                         <a class="collapse-item" href="lesson_category_list.php">課程</a>
@@ -208,15 +208,12 @@ $result = $conn->query($sql);
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Welcome, manager</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
@@ -271,7 +268,7 @@ $result = $conn->query($sql);
                                 <?php endif ?></div>
                             <div>
                                 <?php if (isset($_GET["search"])) : ?>
-                                <a class="btn btn-dark float-left mb-2" href="user-list.php"><i class="bi bi-card-list"></i>查看使用者清單</a>
+                                    <a class="btn btn-dark float-left mb-2" href="user-list.php"><i class="bi bi-card-list"></i>查看使用者清單</a>
                                 <?php endif ?>
                                 <div class="text-end">使用者共 <?= $totalUser ?> 人, 當前顯示 <?= $userCount ?> 人</div>
                             </div>
@@ -319,13 +316,16 @@ $result = $conn->query($sql);
                             </table>
 
                             <!-- <?php if (!isset($_GET["search"])) : ?> -->
-                            <ul class="pagination">
-                                <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
-                                    <li class="page-item <?php if ($page == $i) echo "active"; ?>">
-                                        <a class="page-link bg-secondary text-light" href="user-list.php?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a>
-                                    </li>
-                                <?php endfor ?>
-                            </ul>
+                            <div class="d-flex justify-content-center">
+                                <ul class="pagination">
+                                    <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
+                                        <li class="page-item <?php if ($page == $i) echo "active"; ?>">
+                                            <a class="page-link bg-secondary text-light" href="user-list.php?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a>
+                                        </li>
+                                    <?php endfor ?>
+                                </ul>
+                            </div>
+
 
                             <!-- <?php endif ?> -->
                         </div>

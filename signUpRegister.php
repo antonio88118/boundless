@@ -43,6 +43,14 @@ session_start();
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
+                                <!-- -----------------logo---------------------------------- -->
+                                <span class="sidebar-brand d-flex align-items-center justify-content-center text-decoration-none fs-3">
+                                    <div class="sidebar-brand-icon rotate-n-15">
+                                        <i class="fa-solid fa-music"></i>
+                                    </div>
+                                    <div class="sidebar-brand-text mx-3">Boundless</div>
+                                </span>
+                                <hr class="sidebar-divider">
                                 <h1 class="h4 text-gray-900 mb-4">註冊帳號</h1>
                             </div>
                             <form action="doSignUp.php" method="post">
@@ -54,7 +62,7 @@ session_start();
                                         <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="姓氏">
                                     </div> -->
                                     <div class="col">
-                                        <input type="text" class="form-control form-control-user" id="name" name="name" placeholder="姓名">
+                                        <input type="name" class="form-control form-control-user" id="name" name="name" placeholder="姓名">
                                     </div>
                                 </div>
 
@@ -71,18 +79,19 @@ session_start();
 
                                     <div class="text-danger"><?php if (isset($_SESSION["error"]["message"])) echo $_SESSION["error"]["message"] ?> </div>
 
-                                    <div class="col-md-4">
+                                    <hr />
+                                    <div class="col-md-4 py-4">
                                         <a class="btn btn-primary btn-block  text-center" href="login.php">請由此登入</a>
                                     </div>
                                     <div class="col-2"></div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6  py-4">
                                         <button type="submit" class="btn btn-dark btn-block">
                                             註 冊
                                         </button>
                                     </div>
                                 </div>
 
-                                <hr />
+
                                 <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
                                     <i class="fab fa-google fa-fw"></i> Register with Google
                                 </a>
