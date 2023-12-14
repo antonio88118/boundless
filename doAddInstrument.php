@@ -28,14 +28,16 @@ if(empty($name) || empty($price) || empty($stock) || empty($onshelf_time)){
     $_SESSION["error"]["message"]=$message;
     header("location: instrument-add.php");
     exit;
-}
-// 檢查上架時間
-if(strtotime($onshelf_time) < strtotime($now)){
+
+    // 檢查上架時間
+}elseif(strtotime($onshelf_time) <= strtotime($now)){
     $message="上架時間不得晚於目前時間";
     $_SESSION["error"]["message"]=$message;
     header("location: instrument-add.php");
     exit;
 }
+
+
 
 // 圖片上傳
 if($_FILES["image"]["error"]==0){
@@ -62,6 +64,17 @@ if($_FILES["image"]["error"]==0){
     }else{
         echo "檔案無法操作".$_FILES["image"]["tmp_name"];
     }
+}elseif($_FILES["image"]["error"]==4){
+    // 儲存編輯資料
+    $sql="INSERT INTO instrument (name, price, stock, brand_id, category_id, subcategory_id, onshelf_time, created_time, info)
+    VALUES ('$name', $price, $stock, $brand, $category, $subcategory, '$onshelf_time', '$now', '$info')";
+
+        if($conn->query($sql) === TRUE){
+            $last_id=$conn->insert_id;
+            header("location: instrument-detail.php?id=$last_id");
+        } else {
+            echo "新增商品失敗".$conn->error;
+        }
 }
 
 $conn->close();
