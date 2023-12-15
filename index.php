@@ -23,6 +23,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+    <link rel="icon" href="favicon.svg">
 </head>
 
 <body id="page-top">
@@ -199,9 +200,9 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid d-flex justify-content-center">
                     <div class="d-flex justify-content-center flex-wrap">
-                        <h1 class="">歡迎來到Boundless後台管理系統</h1>
+                        <h1 class="fw-bold">歡迎來到Boundless後台管理系統</h1>
                         <div class="w-100"></div>
-                        <img src="./home_page.jpg" alt="首頁封面" style="width: 700px;">
+                        <img src="./home_page.jpg" alt="首頁封面" style="height: 66vh;">
                     </div>
                 </div>
                 <!-- /.container-fluid -->

@@ -9,6 +9,7 @@
     <?php
     include("main-css.php");
     ?>
+    <link rel="icon" href="favicon.svg">
 </head>
 
 <body>

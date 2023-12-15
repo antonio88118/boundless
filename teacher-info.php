@@ -27,6 +27,7 @@ $row = $result->fetch_assoc();
     include("main-css.php");
     ?>
 
+    <link rel="icon" href="favicon.svg">
 </head>
 
 <body>

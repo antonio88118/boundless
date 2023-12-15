@@ -2,11 +2,30 @@
 require_once("boundless_connect.php");
 session_start();
 
+if (!isset($_GET["search"])) {
+    header("Location: instrument-list.php");
+    exit;
+}
+$search = $_GET["search"];
+
 // 製作分頁
-$countSql = "SELECT instrument.* FROM instrument WHERE valid=1";
+$countSql = "SELECT instrument.*, instrument_category.name AS category_name, 
+instrument_subcategory.name AS subcategory_name, brand.name AS brand_name FROM instrument 
+JOIN instrument_category ON instrument.category_id = instrument_category.id 
+JOIN instrument_subcategory ON instrument.subcategory_id = instrument_subcategory.id
+JOIN brand ON instrument.brand_id = brand.id 
+WHERE instrument.name LIKE '%$search%'AND instrument.valid=1 OR 
+instrument_category.name LIKE '%$search%' AND instrument.valid=1 OR 
+instrument_subcategory.name LIKE '%$search%' AND instrument.valid=1 OR 
+brand.name LIKE '%$search%' AND instrument.valid=1";
 $countResult = $conn->query($countSql);
 // 資料總筆數
-$countTotal = $countResult->num_rows;
+if ($search == "") {
+    $countTotal = 0;
+} else {
+    $countTotal = $countResult->num_rows;
+}
+
 
 $dataPerPage = 20; // 每頁顯示資料數
 $pageCount = ceil($countTotal / $dataPerPage); // 計算需要的頁數
@@ -36,7 +55,10 @@ if (isset($_GET["page"]) && isset($_GET["order"])) {
     JOIN instrument_category ON instrument.category_id = instrument_category.id 
     JOIN instrument_subcategory ON instrument.subcategory_id = instrument_subcategory.id
     JOIN brand ON instrument.brand_id = brand.id
-    WHERE instrument.valid=1
+    WHERE instrument.name LIKE '%$search%'AND instrument.valid=1 OR 
+    instrument_category.name LIKE '%$search%' AND instrument.valid=1 OR 
+    instrument_subcategory.name LIKE '%$search%' AND instrument.valid=1 OR 
+    brand.name LIKE '%$search%' AND instrument.valid=1
     ORDER BY $ordersql
     LIMIT $startItem, $dataPerPage"; //從key 0開始，抓20筆
 } else {
@@ -47,7 +69,10 @@ if (isset($_GET["page"]) && isset($_GET["order"])) {
     JOIN instrument_category ON instrument.category_id = instrument_category.id 
     JOIN instrument_subcategory ON instrument.subcategory_id = instrument_subcategory.id
     JOIN brand ON instrument.brand_id = brand.id
-    WHERE instrument.valid=1
+    WHERE instrument.name LIKE '%$search%'AND instrument.valid=1 OR 
+    instrument_category.name LIKE '%$search%' AND instrument.valid=1 OR 
+    instrument_subcategory.name LIKE '%$search%' AND instrument.valid=1 OR 
+    brand.name LIKE '%$search%' AND instrument.valid=1
     ORDER BY instrument.id ASC
     LIMIT 0, $dataPerPage"; //從key 0開始，抓20筆
 }
@@ -70,7 +95,7 @@ $conn->close();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>樂器商品清單</title>
+    <title>樂器商品清單-關鍵字查詢</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -275,32 +300,7 @@ $conn->close();
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <div class="w-100 d-flex <?= isset($search)? "justify-content-end" : "justify-content-between"?> align-items-center">
-
-                                <!-- 日期區間查詢 -->
-                                <?php if(!isset($search)): ?>
-                                <div class="py-2">
-                                    <form action="instrument-list-date.php">
-                                        <div class="row g-3 align-items-center">
-                                            <div class="col-auto p-0 fw-bold">新增日期查詢：</div>
-                                            <div class="col-auto">
-                                                <input type="date" class="form-control" name="start_time" id="start_time">
-                                            </div>
-                                            <div class="col-auto fw-bold">~</div>
-                                            <div class="col-auto">
-                                                <input type="date" class="form-control" name="end_time" id="end_time" min="<?=date("Y-m-d")?>">
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="submit" class="btn btn-primary fw-bold">搜尋</button>
-                                            </div>
-                                            <?php if(isset($_SESSION["error"]["message"])): ?>
-                                            <div class="col-auto text-danger"><?=$_SESSION["error"]["message"]?></div>
-                                            <?php endif;?>
-                                        </div>
-                                    </form>
-                                </div>
-                                <?php endif;?>
-
+                            <div class="w-100 d-flex justify-content-between align-items-center py-2">
                                 <!-- 搜尋欄 -->
                                 <div style="width: 300px;">
                                     <form action="instrument-list-search.php" method="GET">
@@ -310,21 +310,25 @@ $conn->close();
                                         </div>
                                     </form>
                                 </div>
+
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="p-2">
                                 <!-- 新增商品按鍵 -->
                                 <div class="my-2 mb-3 d-flex align-items-center justify-content-between">
-                                    <div class="ms-1 mb-1">共 <?= $countTotal ?> 筆</div>
+                                    <div class="mb-2">
+                                        <a class="btn btn-primary fw-bold me-2" href="instrument-list.php"><i class="fa-solid fa-reply"></i> 回總清單</a>
+                                        符合資料共 <?= $countTotal ?> 筆
+                                    </div>
                                     <div>
-                                        <?php if(!isset($_GET["search"])): ?>
-                                        <div class="btn-group me-3">
-                                            <a class="btn btn-primary <?php if ($order == 1) echo "active" ?>" href="instrument-list.php?page=<?= $pageNow ?>&order=1">id <i class="fa-solid fa-arrow-up-short-wide"></i></a>
-                                            <a class="btn btn-primary <?php if ($order == 2) echo "active" ?>" href="instrument-list.php?page=<?= $pageNow ?>&order=2">id <i class="fa-solid fa-arrow-down-wide-short"></i></a>
-                                            <a class="btn btn-primary <?php if ($order == 3) echo "active" ?>" href="instrument-list.php?page=<?= $pageNow ?>&order=3"><i class="fa-solid fa-dollar-sign"></i> <i class="fa-solid fa-arrow-up-short-wide"></i></a>
-                                            <a class="btn btn-primary <?php if ($order == 4) echo "active" ?>" href="instrument-list.php?page=<?= $pageNow ?>&order=4"><i class="fa-solid fa-dollar-sign"></i> <i class="fa-solid fa-arrow-down-wide-short"></i></a>
-                                        </div>
+                                        <?php if (isset($_GET["search"])) : ?>
+                                            <div class="btn-group me-3">
+                                                <a class="btn btn-primary <?php if ($order == 1) echo "active" ?>" href="instrument-list-search.php?page=<?= $pageNow ?>&search=<?= $search ?>">id <i class="fa-solid fa-arrow-up-short-wide"></i></a>
+                                                <a class="btn btn-primary <?php if ($order == 2) echo "active" ?>" href="instrument-list-search.php?page=<?= $pageNow ?>&order=2&search=<?= $search ?>">id <i class="fa-solid fa-arrow-down-wide-short"></i></a>
+                                                <a class="btn btn-primary <?php if ($order == 3) echo "active" ?>" href="instrument-list-search.php?page=<?= $pageNow ?>&order=3&search=<?= $search ?>"><i class="fa-solid fa-dollar-sign"></i> <i class="fa-solid fa-arrow-up-short-wide"></i></a>
+                                                <a class="btn btn-primary <?php if ($order == 4) echo "active" ?>" href="instrument-list-search.php?page=<?= $pageNow ?>&order=4&search=<?= $search ?>"><i class="fa-solid fa-dollar-sign"></i> <i class="fa-solid fa-arrow-down-wide-short"></i></a>
+                                            </div>
                                         <?php endif; ?>
                                         <a class="btn btn-primary fw-bold" href="instrument-add.php"><i class="fa-solid fa-circle-plus"></i> 新增商品</a>
                                     </div>
@@ -333,7 +337,7 @@ $conn->close();
                                 <!-- DataTales Example -->
                                 <div class="mb-4">
                                     <table class="table table-bordered table-striped table-hover" width="100%" cellspacing="0">
-                                        <thead class="text-nowrap">
+                                        <thead>
                                             <tr>
                                                 <th>編號</th>
                                                 <th class="text-center">縮圖</th>
@@ -349,7 +353,7 @@ $conn->close();
                                         </thead>
                                         <tbody>
                                             <!-- 檢查是否存在資料 -->
-                                            <?php if ($countTotal > 0) : ?>
+                                            <?php if ($search != "") : ?>
                                                 <?php foreach ($rows as $row) : ?>
                                                     <tr>
                                                         <td class="align-middle"><?= $row["id"] ?></td>
@@ -395,48 +399,46 @@ $conn->close();
 
                                     <!-- 產生分頁 -->
                                     <div class="py-2">
-                                        <?php if (!isset($_GET["search"])) : ?>
-                                            <nav aria-label="Page navigation example">
-                                                <ul class="pagination d-flex justify-content-center">
-                                                    <!-- 最前頁 -->
-                                                    <li class="page-item">
-                                                        <a class="page-link <?php if ($pageNow == 1) echo "disabled" ?>" href="instrument-list.php?page=1&order=<?= $order ?>">最前頁</a>
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination d-flex justify-content-center">
+                                                <!-- 最前頁 -->
+                                                <li class="page-item">
+                                                    <a class="page-link <?php if ($pageNow == 1) echo "disabled" ?>" href="instrument-list-search.php?page=1&order=<?= $order ?>">最前頁</a>
+                                                </li>
+                                                <!-- 若在第一頁，上一頁無效 -->
+                                                <li class="page-item">
+                                                    <?php if ($pageNow == 1) : ?>
+                                                        <a class="page-link disabled" aria-label="Previous" aria-disabled="true">
+                                                        <?php else : ?>
+                                                            <a class="page-link" href="instrument-list-search.php?page=<?= $pageNow - 1 ?>&order=<?= $order ?>" aria-label="Previous">
+                                                            <?php endif; ?>
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                            <span class="sr-only">Previous</span>
+                                                            </a>
+                                                </li>
+                                                <!-- 數字頁碼 -->
+                                                <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
+                                                    <li class="page-item <?php if ($pageNow == $i) echo "active"; ?>">
+                                                        <a class="page-link" href="instrument-list-search.php?page=<?= $i ?>&order=<?= $order ?>&search=<?= $search ?>"><?= $i ?></a>
                                                     </li>
-                                                    <!-- 若在第一頁，上一頁無效 -->
-                                                    <li class="page-item">
-                                                        <?php if ($pageNow == 1) : ?>
-                                                            <a class="page-link disabled" aria-label="Previous" aria-disabled="true">
-                                                            <?php else : ?>
-                                                                <a class="page-link" href="instrument-list.php?page=<?= $pageNow - 1 ?>&order=<?= $order ?>" aria-label="Previous">
-                                                                <?php endif; ?>
-                                                                <span aria-hidden="true">&laquo;</span>
-                                                                <span class="sr-only">Previous</span>
-                                                                </a>
-                                                    </li>
-                                                    <!-- 數字頁碼 -->
-                                                    <?php for ($i = 1; $i <= $pageCount; $i++) : ?>
-                                                        <li class="page-item <?php if ($pageNow == $i) echo "active"; ?>">
-                                                            <a class="page-link" href="instrument-list.php?page=<?= $i ?>&order=<?= $order ?>"><?= $i ?></a>
-                                                        </li>
-                                                    <?php endfor; ?>
-                                                    <li class="page-item">
-                                                        <!-- 若在最後一頁，下一頁無效 -->
-                                                        <?php if ($pageNow == $pageCount) : ?>
-                                                            <a class="page-link disabled" aria-label="Next" aria-disabled="true">
-                                                            <?php else : ?>
-                                                                <a class="page-link" href="instrument-list.php?page=<?= $pageNow + 1 ?>&order=<?= $order ?>" aria-label="Next">
-                                                                <?php endif; ?>
-                                                                <span aria-hidden="true">&raquo;</span>
-                                                                <span class="sr-only">Next</span>
-                                                                </a>
-                                                    </li>
-                                                    <!-- 最後頁 -->
-                                                    <li class="page-item">
-                                                        <a class="page-link <?php if ($pageNow == $pageCount) echo "disabled" ?>" href="instrument-list.php?page=<?= $pageCount ?>&order=<?= $order ?>">最尾頁</a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        <?php endif; ?>
+                                                <?php endfor; ?>
+                                                <li class="page-item">
+                                                    <!-- 若在最後一頁，下一頁無效 -->
+                                                    <?php if ($pageNow == $pageCount) : ?>
+                                                        <a class="page-link disabled" aria-label="Next" aria-disabled="true">
+                                                        <?php else : ?>
+                                                            <a class="page-link" href="instrument-list-search.php?page=<?= $pageNow + 1 ?>&order=<?= $order ?>&search=<?= $search ?>" aria-label="Next">
+                                                            <?php endif; ?>
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                            <span class="sr-only">Next</span>
+                                                            </a>
+                                                </li>
+                                                <!-- 最後頁 -->
+                                                <li class="page-item">
+                                                    <a class="page-link <?php if ($pageNow == $pageCount) echo "disabled" ?>" href="instrument-list-search.php?page=<?= $pageCount ?>&order=<?= $order ?>&search=<?= $search ?>">最尾頁</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
                                     </div>
 
                                 </div>
@@ -491,7 +493,7 @@ $conn->close();
         </div>
     </div>
 
-    <?php unset($_SESSION["error"]["message"])?>
+    <?php unset($_SESSION["error"]["message"]) ?>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -528,7 +530,7 @@ $conn->close();
             var minValue = startTime.value;
             str = minValue;
             $("#end_time").attr("min", str);
-            
+
         }
         startTime.addEventListener("change", setMinTime);
     </script>

@@ -14,6 +14,7 @@ if (!isset($_POST["name"])) {
 // $id = $_POST["id"];
 $name = $_POST["name"];
 $address = $_POST["address"];
+$region_id=$_POST["region"];
 $phone = $_POST["phone"];
 $price = $_POST["price"];
 
@@ -24,13 +25,13 @@ $time = date('Y-m-d H:i:s');
 
 // echo "$id,$name,$address,$phone,$price";
 
-if (empty($name) || empty($address) || empty($phone) || empty($price)) {
+if (empty($name) || empty($address) || empty($phone) || empty($price) || empty($region_id)) {
     echo "請輸入資料";
     die;
 } //seems not work
 
-$sql = "INSERT INTO classroom (name, address, phone, price,valid)
-VALUES ('$name', '$address', '$phone','$price',1)";
+$sql = "INSERT INTO classroom (name, address, region_id, phone, price,valid)
+VALUES ('$name', '$address', $region_id, '$phone','$price',1)";
 
 
 // exit;

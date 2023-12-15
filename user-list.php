@@ -28,7 +28,7 @@ if (isset($_GET["page"]) && isset($_GET["order"])) {
     // ------------------------------------------------------------------------------------------------------------------------------------------
     if (isset($_GET["search"])) {
         $search = $_GET["search"];
-        $sql = "SELECT * FROM users WHERE name LIKE '%$search%' OR email LIKE '%$search%'  AND valid=1 ORDER BY $orderSql LIMIT $startItem, $perPage";
+        $sql = "SELECT * FROM users WHERE name LIKE '%$search%' AND valid=1 OR email LIKE '%$search%'  AND valid=1 ORDER BY $orderSql LIMIT $startItem, $perPage";
     } else {
         $sql = "SELECT * FROM users WHERE valid=1 ORDER BY $orderSql LIMIT $startItem, $perPage";
     }
@@ -38,7 +38,7 @@ if (isset($_GET["page"]) && isset($_GET["order"])) {
     $order = 1;
     if (isset($_GET["search"])) {
         $search = $_GET["search"];
-        $sql = "SELECT * FROM users WHERE name LIKE '%$search%' OR email LIKE '%$search%' AND valid=1";
+        $sql = "SELECT * FROM users WHERE name LIKE '%$search%'AND valid=1 OR email LIKE '%$search%' AND valid=1";
     } else {
         $sql = "SELECT * FROM users WHERE valid=1 ORDER BY id ASC LIMIT 0, $perPage";
     }
@@ -67,6 +67,8 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+
+    <link rel="icon" href="favicon.svg">
 </head>
 
 <body id="page-top">

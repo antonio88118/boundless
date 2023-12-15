@@ -41,6 +41,7 @@ $row = $result->fetch_assoc();
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+    <link rel="icon" href="favicon.svg">
 </head>
 
 <body id="page-top">
@@ -217,11 +218,11 @@ $row = $result->fetch_assoc();
                     <div class="mx-3">
                         <h1 class="h3 text-gray-800 text-center">商品資訊</h1>
                         <div class="d-flex justify-content-between">
-                            <a class="btn btn-secondary" href="instrument-list.php"><i class="fa-solid fa-reply"></i> 回商品清單</a>
+                            <a class="btn btn-secondary fw-bold" href="instrument-list.php"><i class="fa-solid fa-reply"></i> 回商品清單</a>
 
                             <form action="doOnshelfInstrument.php" method="post">
                                 <!-- 立即上架鍵 -->
-                                <button type="submit" class="btn btn-primary px-3" name="id" value="<?=$row["id"]?>"
+                                <button type="submit" class="btn btn-primary px-3 fw-bold" name="id" value="<?=$row["id"]?>"
                                     <?php if($row["onshelf_time"]<=date("Y-m-d H:i:s")) echo "disabled"?>>
                                     <i class="fa-solid fa-shop"></i> 立即上架
                                 </button>
@@ -293,12 +294,12 @@ $row = $result->fetch_assoc();
                             <!-- 按鍵區域 -->
                             <div class="text-center d-flex justify-content-center">
                                 <form action="instrument-edit.php" method="post">
-                                    <button type="submit" class="btn btn-primary me-5 px-3" name="id" value="<?=$row["id"]?>"><i class="fa-solid fa-pen"></i> 編輯</button>
+                                    <button type="submit" class="btn btn-primary me-5 px-3 fw-bold" name="id" value="<?=$row["id"]?>"><i class="fa-solid fa-pen"></i> 編輯</button>
                                 </form>
 
 
                                 <!-- Button trigger modal -->
-                                <button class="btn btn-danger px-3" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i> 刪除</button>
+                                <button class="btn btn-danger px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fa-solid fa-trash"></i> 刪除</button>
                                 <!-- Modal -->
                                 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">

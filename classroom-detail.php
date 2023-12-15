@@ -13,8 +13,6 @@ $sql = "SELECT classroom.*, classroom_region.region AS region
 FROM classroom
 JOIN classroom_region ON classroom.region_id = classroom_region.id 
 WHERE classroom.id=$id AND classroom.valid=1";
-$sql = "SELECT *
-FROM classroom WHERE id=$id AND valid=1";
 
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
@@ -48,7 +46,7 @@ $row = $result->fetch_assoc();
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-
+    <link rel="icon" href="favicon.svg">
 
 </head>
 
@@ -257,7 +255,7 @@ $row = $result->fetch_assoc();
                                 </tr>
                                 <tr class="row">
                                     <td class="col-2 border-start">區域</td>
-                                    <td class="col-10 border-end"><?= $row["region_id"] ?></td>
+                                    <td class="col-10 border-end"><?= $row["region"] ?></td>
                                 </tr>
                                 <tr class="row">
                                     <td class="col-2 border-start">地址</td>
@@ -286,7 +284,7 @@ $row = $result->fetch_assoc();
                                     <td class="col-2 border-start">庫存數量</td>
                                     <td class="col-10 border-end"></td>
                                 </tr> -->
-                                <tr class="row">
+                                <!-- <tr class="row">
                                     <td class="col-2 border-start">新增時間</td>
                                     <td class="col-3"><?= $row["created_time"] ?></td>
                                     <td class="col-2">上架時間</td>
@@ -298,7 +296,7 @@ $row = $result->fetch_assoc();
                                                 echo "已上架";
                                             }
                                             ?>）</td>
-                                </tr>
+                                </tr> -->
 
                                 <!-- <tr class="row">
                                     <td class="col-2 border-start">最後更新時間</td>

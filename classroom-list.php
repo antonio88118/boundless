@@ -52,18 +52,20 @@ if (isset($_GET["page"]) && isset($_GET["order"])) {
 
     switch ($order) {
         case 1:
-            $orderSql = "id ASC";
+            $orderSql = "classroom.id ASC";
             break;
         case 2:
-            $orderSql = "id DESC";
+            $orderSql = "classroom.id DESC";
             break;
         default:
-            $orderSql = "id ASC";
+            $orderSql = "classroom.id ASC";
             break;
     }
 
     $startItem = ($pageNow - 1) * $dataPerPage;
-    $sql = "SELECT * FROM classroom WHERE valid=1 ORDER BY $orderSql LIMIT $startItem, $dataPerPage";
+    $sql = "SELECT classroom.*, classroom_region.region AS region FROM classroom 
+    JOIN classroom_region ON classroom.region_id = classroom_region.id
+    WHERE classroom.valid=1 ORDER BY $orderSql LIMIT $startItem, $dataPerPage";
 
     // ------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -90,14 +92,20 @@ else {
         // 檢查搜尋條件是不是數字（即搜尋 ID）
         if (is_numeric($search)) {
             // 直接比較 ID
-            $sql = "SELECT * FROM classroom WHERE id = $search AND valid=1";
+            $sql = "SELECT classroom.*, classroom_region.region AS region FROM classroom 
+            JOIN classroom_region ON classroom.region_id = classroom_region.id
+            WHERE classroom.id = $search AND classroom.valid=1";
         } else {
             // 如果不是數字，則搜尋其他字段
-            $sql = "SELECT * FROM classroom WHERE name LIKE '%$search%' AND valid=1";
+            $sql = "SELECT classroom.*, classroom_region.region AS region FROM classroom 
+            JOIN classroom_region ON classroom.region_id = classroom_region.id
+            WHERE classroom.name LIKE '%$search%' AND classroom.valid=1 OR classroom_region.region LIKE '%$search%' AND classroom.valid=1";
         }
     } else {
         // 無搜尋條件的情況
-        $sql = "SELECT * FROM classroom WHERE valid=1 ORDER BY id ASC LIMIT 0, $dataPerPage";
+        $sql = "SELECT classroom.*, classroom_region.region AS region FROM classroom 
+        JOIN classroom_region ON classroom.region_id = classroom_region.id 
+        WHERE classroom.valid=1 ORDER BY classroom.id ASC LIMIT 0, $dataPerPage";
     }
 }
 
@@ -143,6 +151,7 @@ $conn->close();
     <!-- main.css -->
     <link rel="stylesheet" href="css/main.css">
 
+    <link rel="icon" href="favicon.svg">
 
 </head>
 
@@ -386,7 +395,7 @@ $conn->close();
                                 <?PHP endif; ?>
                                 <form action="" method="get">
                                     <div class="input-group py-3 mx-3">
-                                        <input type="text" class="form-control" placeholder="搜尋練團室id..." name="search" value="<?php if (isset($_GET["search"])) {echo $_GET["search"];} ?>">
+                                        <input type="text" class="form-control" placeholder="搜尋關鍵字..." name="search" value="<?php if (isset($_GET["search"])) {echo $_GET["search"];} ?>">
                                         <button class="btn btn-dark" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                                     </div>
                                 </form>
@@ -437,6 +446,7 @@ $conn->close();
                                         <th scope="col">id</th>
                                         <th scope="col">店名</th>
                                         <th scope="col">店家地址</th>
+                                        <th scope="col">地區</th>
                                         <th scope="col">電話</th>
                                         <th scope="col">價錢</th>
 
@@ -454,6 +464,8 @@ $conn->close();
                                             </td>
 
                                             <td><?= $row["address"]
+                                                ?></td>
+                                                <td><?= $row["region"]
                                                 ?></td>
                                             <td><?= $row["phone"]
                                                 ?></td>

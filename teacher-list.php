@@ -33,6 +33,8 @@ $email = "email";
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <link rel="icon" href="favicon.svg">
 </head>
 
 <body id="page-top">

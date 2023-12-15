@@ -35,6 +35,7 @@ $teacherRows = $teacherResult->fetch_all(MYSQLI_ASSOC);
     include("main-css.php");
     ?>
 
+    <link rel="icon" href="favicon.svg">
 </head>
 
 <body>

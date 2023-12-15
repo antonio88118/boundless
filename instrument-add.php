@@ -39,6 +39,7 @@ $brandRows = $brandResult->fetch_all(MYSQLI_ASSOC);
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+    <link rel="icon" href="favicon.svg">
     <style>
         /* 消除數字輸入區域旁的箭頭 */
         input::-webkit-outer-spin-button,
@@ -221,7 +222,7 @@ $brandRows = $brandResult->fetch_all(MYSQLI_ASSOC);
                 <div class="container-fluid">
                     <div class="mx-3">
                         <h1 class="h3 text-gray-800 text-center">新增商品</h1>
-                        <a class="btn btn-secondary" href="instrument-list.php"><i class="fa-solid fa-reply"></i> 回商品清單</a>
+                        <a class="btn btn-secondary fw-bold" href="instrument-list.php"><i class="fa-solid fa-reply"></i> 回商品清單</a>
                     </div>
 
                     <div class="mx-3 py-3 row gx-5">
@@ -313,10 +314,10 @@ $brandRows = $brandResult->fetch_all(MYSQLI_ASSOC);
                             <div class="text-center d-flex justify-content-center">
 
                                 <!-- 取消鍵 -->
-                                <a class="btn btn-secondary me-5 px-3" href="instrument-list.php">取消</a>
+                                <a class="btn btn-secondary me-5 px-3 fw-bold" href="instrument-list.php">取消</a>
 
                                 <!-- 儲存鍵 -->
-                                <a class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#saveModal"><i class="fa-solid fa-floppy-disk"></i> 儲存</a>
+                                <a class="btn btn-primary px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#saveModal"><i class="fa-solid fa-floppy-disk"></i> 儲存</a>
                                 <!-- Modal -->
                                 <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="saveModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -329,9 +330,9 @@ $brandRows = $brandResult->fetch_all(MYSQLI_ASSOC);
                                                 確定儲存內容？
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                                <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">取消</button>
                                                 <!-- 提交按鍵 -->
-                                                <button type="submit" class="btn btn-primary" name="id" value="<?= $row["id"] ?>">確定</button>
+                                                <button type="submit" class="btn btn-primary fw-bold" name="id" value="<?= $row["id"] ?>">確定</button>
                                             </div>
                                         </div>
                                     </div>
